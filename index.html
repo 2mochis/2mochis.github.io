@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
 <title>Para vos ❤</title>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -83,7 +84,8 @@
     border-radius: 14px; cursor: pointer;
     box-shadow: 0 4px 12px rgba(0,0,0,.1);
   }
-  .galeria img:first-child { grid-column: span 2; aspect-ratio: 4/3; }
+  .galeria img:first-child,
+  .galeria img:last-child:nth-child(even) { grid-column: span 2; aspect-ratio: 4/3; }
 
   /* Visor de foto */
   #visor {
@@ -150,14 +152,9 @@
 
 Podés usar varias líneas.`,
     firma: "Axel",
-    fotos: [
-      "fotos/1.jpg",
-      "fotos/2.jpg",
-      "fotos/3.jpg",
-      "fotos/4.jpg",
-      "fotos/5.jpg"
-    ]
+    cantidadFotos: 11   // fotos/1.jpg ... fotos/11.jpg
   };
+  CONFIG.fotos = Array.from({ length: CONFIG.cantidadFotos }, (_, i) => `fotos/${i + 1}.jpg`);
   /* ========================================================= */
 
   document.getElementById("titulo").textContent = CONFIG.titulo;
