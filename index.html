@@ -139,7 +139,7 @@
 
 <div id="visor"><img alt=""></div>
 
-<audio id="audio" src="audio/mensaje.mp3" preload="auto"></audio>
+<audio id="audio" src="mensaje.mp3" preload="auto"></audio>
 
 <script>
   /* =========================================================
@@ -152,9 +152,9 @@
 
 Podés usar varias líneas.`,
     firma: "Axel",
-    cantidadFotos: 11   // fotos/1.jpg ... fotos/11.jpg
+    cantidadFotos: 11   // 1.jpg ... 11.jpg (en la raíz del repo)
   };
-  CONFIG.fotos = Array.from({ length: CONFIG.cantidadFotos }, (_, i) => `fotos/${i + 1}.jpg`);
+  CONFIG.fotos = Array.from({ length: CONFIG.cantidadFotos }, (_, i) => `${i + 1}.jpg`);
   /* ========================================================= */
 
   document.getElementById("titulo").textContent = CONFIG.titulo;
