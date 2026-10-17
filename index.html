@@ -177,7 +177,22 @@
   #disco svg.aro { position: absolute; inset: 0; transform: rotate(-90deg); }
   #disco .icono { width: 20px; height: 20px; transition: transform .3s; }
   #disco.sonando .icono { animation: latido 1.4s infinite; }
-  #disco:not(.sonando) .icono { opacity: .6; }
+  #disco.escuchado:not(.sonando) .icono { opacity: .6; }
+  /* antes de escucharlo: un halo suave que invita a tocar */
+  #disco:not(.escuchado)::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(242,184,198,.55);
+    animation: halo 2.2s ease-out infinite;
+  }
+  @keyframes halo { to { box-shadow: 0 0 0 16px rgba(242,184,198,0); } }
+  .pista {
+    position: absolute; right: 62px; top: 50%; translate: 0 -50%;
+    white-space: nowrap; pointer-events: none;
+    font-family: 'Instrument Serif', serif; font-style: italic; font-size: 1.1rem; color: var(--papel);
+    background: rgba(59,24,56,.75); padding: 5px 12px; border-radius: 14px;
+    transition: opacity .6s;
+  }
+  #disco.escuchado .pista { opacity: 0; }
   #disco:focus-visible { outline: 2px solid var(--vela); outline-offset: 3px; }
 
   @media (prefers-reduced-motion: reduce) {
@@ -217,7 +232,7 @@
   <p class="ayuda">Tocá para ver la siguiente</p>
 </div>
 
-<button id="disco" aria-label="Pausar mensaje de audio">
+<button id="disco" aria-label="Escuchar mensaje de audio">
   <svg class="aro" viewBox="0 0 50 50" aria-hidden="true">
     <circle cx="25" cy="25" r="23" fill="none" stroke="rgba(242,184,198,.18)" stroke-width="2"/>
     <circle id="progreso" cx="25" cy="25" r="23" fill="none" stroke="#f2b8c6" stroke-width="2"
@@ -233,11 +248,10 @@
      EDITÁ ACÁ
      ========================================================= */
   const CONFIG = {
-    titulo: "Para vos",
-    subtitulo: "Juntos desde [fecha]",
-    mensaje: `Escribí acá tu mensaje.
-
-Podés usar varias líneas.`,
+    titulo: "Para Valen",
+    subtitulo: "Juntos desde 12-04-25",
+    mensaje: `Te amo, gracias por apoyarme siempre.
+Feliz primer año juntos, ¡por muchos más!`,
     firma: "Axel",
     final: "Te amo",          // frase al final de las fotos (dejala vacía "" para quitarla)
     cantidadFotos: 11,        // 1.jpg ... 11.jpg en la raíz del repo
@@ -309,7 +323,7 @@ Podés usar varias líneas.`,
   const audio = $("audio"), disco = $("disco"), aro = $("progreso");
   const LARGO = 144.5;
   disco.onclick = () => audio.paused ? audio.play() : audio.pause();
-  audio.onplay = () => { disco.classList.add("sonando"); disco.setAttribute("aria-label", "Pausar mensaje de audio"); };
+  audio.onplay = () => { disco.classList.add("sonando", "escuchado"); disco.setAttribute("aria-label", "Pausar mensaje de audio"); };
   audio.onpause = () => { disco.classList.remove("sonando"); disco.setAttribute("aria-label", "Escuchar mensaje de audio"); };
   audio.ontimeupdate = () => {
     const p = audio.duration ? audio.currentTime / audio.duration : 0;
@@ -323,7 +337,6 @@ Podés usar varias líneas.`,
     if (portada.classList.contains("abierta")) return;
     portada.classList.add("abierta");
     document.body.classList.add("abierto");
-    audio.play().catch(() => {});
   }
   portada.onclick = abrir;
   portada.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); abrir(); } };
